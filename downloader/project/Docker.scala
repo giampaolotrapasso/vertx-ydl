@@ -27,7 +27,7 @@ object Docker extends AutoPlugin {
           from("frolvlad/alpine-oraclejdk8:slim")
           add(artifact, artifactTargetPath)
           entryPoint("java", "-jar", artifactTargetPath)
-          expose(exposedPorts.value: _*)
+          expose(exposedPorts.value:_*)
         }
       }
     )

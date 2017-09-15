@@ -5,12 +5,17 @@ import Docker.autoImport.exposedPorts
 scalaVersion := "2.12.1"
 
 enablePlugins(DockerPlugin)
+enablePlugins(SbtTwirl)
+
 exposedPorts := Seq(8666)
 
-libraryDependencies ++= Vector (
+libraryDependencies ++= Vector(
   Library.vertx_lang_scala,
   Library.vertx_web,
-  Library.scalaTest       % "test",
+  Library.scalaTest % "test",
+  "com.typesafe.play" %% "play-json" % "2.6.3",
+  "ch.qos.logback" % "logback-classic" % "1.2.3",
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2",
   // Uncomment for clustering
   // Library.vertx_hazelcast,
 
@@ -18,6 +23,7 @@ libraryDependencies ++= Vector (
   Library.vertx_codegen
 )
 
-packageOptions += ManifestAttributes(
-  ("Main-Verticle", "scala:com.giampaolo.trapasso.ydl.frontend.HttpVerticle"))
+//fork := true
+//javaOptions += "-Dvertx.logger-delegate-factory-class-name=io.vertx.core.logging.SLF4JLogDelegateFactory"
 
+packageOptions += ManifestAttributes(("Main-Verticle", "scala:com.giampaolo.trapasso.ydl.frontend.HttpVerticle"))

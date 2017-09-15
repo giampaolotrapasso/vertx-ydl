@@ -1,4 +1,4 @@
-package com.giampaolo.trapasso.ydl.frontend
+package com.giampaolo.trapasso.ydl.downloader
 
 import org.scalatest._
 
