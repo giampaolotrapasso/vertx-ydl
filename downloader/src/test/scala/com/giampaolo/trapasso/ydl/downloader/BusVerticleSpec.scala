@@ -2,14 +2,12 @@ package com.giampaolo.trapasso.ydl.downloader
 
 import org.scalatest._
 
-class BusVerticleSpec extends VerticleTesting[BusVerticle] with Matchers {
+class DownloadVerticleSpec extends VerticleTesting[DownloadVerticle] with Matchers {
 
-  "BusVerticle" should "reply to a message" in {
-    val future = vertx
-        .eventBus()
-        .sendFuture[String]("testAddress", "msg")
+  "DownloadVerticle" should "reply to a message" in {
+    val future = vertx.eventBus().sendFuture[String]("urlRequest", "msg")
 
-    future.map(res => res.body() should equal("Hello World!"))
+    future.map(res => res.body() should equal("Done"))
   }
 
 }

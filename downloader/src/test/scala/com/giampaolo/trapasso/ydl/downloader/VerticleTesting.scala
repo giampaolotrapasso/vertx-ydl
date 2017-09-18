@@ -10,7 +10,7 @@ import scala.concurrent.duration._
 import scala.reflect.runtime.universe._
 import scala.util.{Failure, Success}
 
-abstract class VerticleTesting[A <: ScalaVerticle: TypeTag] extends AsyncFlatSpec with BeforeAndAfter{
+abstract class VerticleTesting[A <: ScalaVerticle: TypeTag] extends AsyncFlatSpec with BeforeAndAfter {
   val vertx = Vertx.vertx
   implicit val vertxExecutionContext = VertxExecutionContext(
     vertx.getOrCreateContext()
@@ -22,24 +22,20 @@ abstract class VerticleTesting[A <: ScalaVerticle: TypeTag] extends AsyncFlatSpe
 
   before {
     deploymentId = Await.result(
-      vertx
-        .deployVerticleFuture("scala:" + implicitly[TypeTag[A]].tpe.typeSymbol.fullName,
-          DeploymentOptions().setConfig(config()))
-        .andThen {
-          case Success(d) => d
-          case Failure(t) => throw new RuntimeException(t)
-        },
+      vertx.deployVerticleFuture("scala:" + implicitly[TypeTag[A]].tpe.typeSymbol.fullName, DeploymentOptions().setConfig(config())).andThen {
+        case Success(d) => d
+        case Failure(t) => throw new RuntimeException(t)
+      },
       10000 millis
     )
   }
 
   after {
     Await.result(
-      vertx.undeployFuture(deploymentId)
-        .andThen {
-          case Success(d) => d
-          case Failure(t) => throw new RuntimeException(t)
-        },
+      vertx.undeployFuture(deploymentId).andThen {
+        case Success(d) => d
+        case Failure(t) => throw new RuntimeException(t)
+      },
       10000 millis
     )
   }

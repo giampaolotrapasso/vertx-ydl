@@ -12,12 +12,12 @@ object Build extends AutoPlugin {
   override def projectSettings: Seq[Def.Setting[_]] =
     Vector(
       resolvers ++= Vector(
-          "Sonatype SNAPSHOTS" at "https://oss.sonatype.org/content/repositories/snapshots/"
+        "Sonatype SNAPSHOTS" at "https://oss.sonatype.org/content/repositories/snapshots/"
       ),
       scalaVersion := Version.Scala,
       assemblyMergeStrategy in assembly := {
         case PathList("META-INF", "MANIFEST.MF") => MergeStrategy.discard
-        case PathList("META-INF", xs @ _*) => MergeStrategy.last
+        case PathList("META-INF", xs @ _ *) => MergeStrategy.last
         case PathList("META-INF", "io.netty.versions.properties") => MergeStrategy.last
         case PathList("codegen.json") => MergeStrategy.discard
         case x =>
@@ -29,7 +29,8 @@ object Build extends AutoPlugin {
         "-deprecation",
         "-language:_",
         "-target:jvm-1.8",
-        "-encoding", "UTF-8"
+        "-encoding",
+        "UTF-8"
       ),
       mainClass := Some("io.vertx.core.Launcher"),
       unmanagedSourceDirectories in Compile := Vector(scalaSource.in(Compile).value),
