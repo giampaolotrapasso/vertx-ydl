@@ -5,7 +5,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.moneyfarm.sipp" level="DEBUG"/>
+    <logger name="com.giampaolotrapasso.vertxydl" level="DEBUG"/>
 
     <root level="DEBUG">
         <appender-ref ref="STDOUT"/>
