@@ -14,6 +14,7 @@ libraryDependencies ++= Vector(
   "com.typesafe.play" %% "play-json" % "2.6.3",
   "ch.qos.logback" % "logback-classic" % "1.2.3",
   "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2",
+  "org.zeroturnaround" % "zt-exec" % "1.10",
   // Uncomment for clustering
   Library.vertx_hazelcast,
   //required to get rid of some warnings emitted by the scala-compile
