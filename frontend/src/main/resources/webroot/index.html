@@ -1,41 +1,79 @@
+<!DOCTYPE html>
 <html>
+
 <head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js" data-semver="2.1.1" data-require="jquery@*"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js" data-semver="3.1.1" data-require="bootstrap@3.1.1"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-mockjax/1.5.3/jquery.mockjax.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" data-semver="3.1.1" data-require="bootstrap-css@3.1.1" />
 </head>
+
 <body>
-<h1>Welcome to Vert.x Youtube downloader</h1>
-<form id="form" method="POST">
-    <input type="text" name="video" id="v"/>
-    <input id="submit" type="button" name="submit" value="Submit">
-</form>
 
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"
-        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-        crossorigin="anonymous"></script>
+<div class="jumbotron text-center">
+    <h1>Welcome to Vert.x Youtube downloader</h1>
+</div>
 
-
+<div class="container">
+    <div class="well">
+        <form id="ajaxForm" class="form-vertical" role="form" autocomplete="off" method="POST" action="/urls">
+            <fieldset>
+                <div class="form-group col-xs-12 col-sm-12">
+                    <label for="video" class="control-label">Url</label>
+                    <input type="text" class="form-control" name="video" id="video" placeholder="Enter Video Url">
+                </div>
+                <div class="pull-right">
+                    <br>
+                    <div class="btn-group col-xs-12">
+                        <button type="button" class="btn btn-warning" id="sendPlainJSon">Send</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
 
 
 <script>
-    $(document).ready(function(){
-        // click on button submit
-        $("#submit").on('click', function(){
-            // send ajax
-            $.ajax({
-                url: 'urls', // url where to submit the request
-                type : "POST", // type of action POST || GET
-                dataType : 'text', // data type
-                data : JSON.stringify($("#form").serializeArray()), // post data || get data
-                contentType : "application/json",
-                success : function(result) {
-                    // you can see the result from the console
-                    // tab of the developer tools
-                    console.log(result);
-                },
-                error: function(xhr, resp, text) {
-                    console.log(xhr, resp, text);
-                }
-            })
-        });
+    $(document).ready(function() {
+
+  function ajaxCallRequest(f_method, f_url, f_data) {
+    var f_contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+    $.ajax({
+      url: f_url,
+      type: f_method,
+      contentType: f_contentType,
+      dataType: 'json',
+      data: f_data,
+      success: function(data) {
+        var jsonResult = JSON.stringify(data);
+        $("#results").val(unescape(jsonResult));
+      }
     });
+  }
+
+  $("#sendPlainJSon").click(function(event) {
+    event.preventDefault();
+    var form = $('#ajaxForm');
+    var method = form.attr('method');
+    var url = form.attr('action');
+    var jsonData = {};
+    $.each($(form).serializeArray(), function() {
+      jsonData[this.name] = this.value;
+    });
+    var data = JSON.stringify(jsonData);
+    console.log(data);
+    ajaxCallRequest(method, url, data);
+  });
+
+});
+
+
 </script>
+
+
 </body>
+
+</html>
+
+
