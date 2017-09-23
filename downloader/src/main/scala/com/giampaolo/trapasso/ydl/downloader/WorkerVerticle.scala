@@ -1,5 +1,6 @@
 package com.giampaolo.trapasso.ydl.downloader
 
+import java.io.File
 import java.util.concurrent.{Future => JavaFuture}
 
 import com.typesafe.scalalogging.LazyLogging
@@ -14,13 +15,18 @@ class WorkerVerticle extends ScalaVerticle with LazyLogging {
   override def startFuture(): Future[_] =
     Future {
       val url = config.getString("url")
+      val rootPath = config.getString("rootPath")
+      val downloadPath = config.getString("downloadPath")
+      val directory = s"""-o $downloadPath/%(title)s.%(ext)s"""
 
       new ProcessExecutor()
-        .command("youtube-dl", url)
+        .directory(new File(rootPath))
+        .command("youtube-dl", directory, url)
         .redirectOutput(new LogOutputStream() {
           @Override
           def processLine(line: String) {
-            DownloadStatus.fromString(line).foreach{ download =>
+            logger.debug("Line " + line)
+            DownloadStatus.fromString(line).foreach { download =>
               logger.debug(s"Download $download")
             }
           }

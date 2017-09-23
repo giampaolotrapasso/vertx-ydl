@@ -36,10 +36,11 @@ class HttpVerticle extends ScalaVerticle with LazyLogging {
     router
       .post("/urls")
       .handler(r => {
+        logger.debug(s"Received request for ${r.getBodyAsString()}")
         for {
           request <- r.getBodyAsString()
-          map = Json.parse(request).as[List[Map[String, String]]].flatten.toMap
-          videoRequest = VideoRequest(map("value"))
+          map = Json.parse(request).as[Map[String, String]]
+          videoRequest = VideoRequest(map("video"))
           _ = eventBus.send("urlRequest", Json.toJson(videoRequest).toString(), handler)
         } yield videoRequest
         r.response().setStatusCode(201).end("{}")

@@ -17,7 +17,8 @@ class DownloadVerticle extends ScalaVerticle with LazyLogging {
 
       val w = classOf[WorkerVerticle]
 
-      val config = new JsonObject(x.body)
+      val config = new JsonObject(x.body).put("rootPath","/Users/Giampaolo").put("downloadPath","MyVideos")
+
       val deploymentOptions = DeploymentOptions().setConfig(config)
       val s = w.getName
 
