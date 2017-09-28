@@ -12,19 +12,17 @@ import scala.concurrent.Future
 class DownloadVerticle extends ScalaVerticle with LazyLogging {
 
   override def startFuture(): Future[_] = {
+    val workerVerticleName = config.getString("workerVerticleName")
+
     val handler: Handler[Message[String]] = x => {
+
       logger.debug("Received " + x.body())
 
-      val w = classOf[WorkerVerticle]
+      val workerConfig = new JsonObject(x.body).put("rootPath", "/Users/Giampaolo").put("downloadPath", "MyVideos")
+      val deploymentOptions = DeploymentOptions().setConfig(workerConfig)
 
-      val config = new JsonObject(x.body).put("rootPath","/Users/Giampaolo").put("downloadPath","MyVideos")
-
-      val deploymentOptions = DeploymentOptions().setConfig(config)
-      val s = w.getName
-
-      vertx.deployVerticle(s"scala:$s", deploymentOptions)
+      vertx.deployVerticle(workerVerticleName, deploymentOptions)
       x.reply("Done")
-
     }
 
     vertx.eventBus().consumer[String]("urlRequest").handler(handler).completionFuture()

@@ -7,7 +7,7 @@ object DownloadStatus {
   def fromString(s: String): Option[DownloadStatus] = {
 
     val regexp = new scala.util.matching.Regex(
-      """([0-9]{1,2}.[0-9]{1,2})%[ ]of[ ]([0-9]{1,4}.[0-9]{1,2}.iB)[ ]at[ ]([0-9]{1,4}.[0-9]{1,2}.iB\/s)[ ]ETA[ ].*""",
+      """([0-9]{1,3}.[0-9]{1,2})%[ ]of[ ]([0-9]{1,4}.[0-9]{1,2}.iB)[ ]at[ ]([0-9]{1,4}.[0-9]{1,2}.iB\/s)[ ]ETA[ ].*""",
       "progress",
       "size",
       "speed")

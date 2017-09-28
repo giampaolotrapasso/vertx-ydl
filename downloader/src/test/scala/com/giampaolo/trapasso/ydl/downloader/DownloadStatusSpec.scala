@@ -12,18 +12,28 @@ class DownloadStatusSpec extends WordSpec {
       "return None" in {
         DownloadStatus.fromString("[youtube] v4pi1LxuDHc: Downloading webpage") shouldBe None
       }
+    }
+    """receives [download]   7.2% of 42.96MiB at 11.26KiB/s ETA 01:00:30""" should {
 
-      """receives [download]   7.2% of 42.96MiB at 11.26KiB/s ETA 01:00:30""" should {
+      "return valid download status" in {
 
-        "return valid download status" in {
-
-          DownloadStatus.fromString("[download]   7.2% of 42.96MiB at 11.26KiB/s ETA 01:00:30") shouldBe Some(
-            DownloadStatus("7.2", "42.96MiB", "11.26KiB/s"))
-
-        }
+        DownloadStatus.fromString("[download]   7.2% of 42.96MiB at 11.26KiB/s ETA 01:00:30") shouldBe Some(
+          DownloadStatus("7.2", "42.96MiB", "11.26KiB/s"))
 
       }
 
     }
+
+    """receives [download]   100.0% of 42.96MiB at 11.26KiB/s ETA 01:00:30""" should {
+
+      "return valid download status" in {
+
+        DownloadStatus.fromString("[download]   100.0% of 42.96MiB at 11.26KiB/s ETA 01:00:30") shouldBe Some(
+          DownloadStatus("100.0", "42.96MiB", "11.26KiB/s"))
+
+      }
+
+    }
+
   }
 }
