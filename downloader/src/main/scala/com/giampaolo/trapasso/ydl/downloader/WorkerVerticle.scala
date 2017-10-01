@@ -4,9 +4,12 @@ import java.io.File
 import java.util.concurrent.{Future => JavaFuture}
 
 import com.typesafe.scalalogging.LazyLogging
+import io.vertx.core.{AsyncResult, Handler}
 import io.vertx.lang.scala.ScalaVerticle
+import io.vertx.scala.core.eventbus.Message
 import org.zeroturnaround.exec.ProcessExecutor
 import org.zeroturnaround.exec.stream.LogOutputStream
+import play.api.libs.json.Json
 
 import scala.concurrent.Future
 
@@ -26,8 +29,9 @@ class WorkerVerticle extends ScalaVerticle with LazyLogging {
           @Override
           def processLine(line: String) {
             logger.debug("Line " + line)
-            DownloadStatus.fromString(line).foreach { download =>
+            DownloadStatus.fromString(url, line).foreach { download =>
               logger.debug(s"Download $download")
+              vertx.eventBus.send("downloadUpdate", Json.toJson(download).toString())
             }
           }
         })
